@@ -1,1 +1,1 @@
-Needs improvement
+Rust learning journey
