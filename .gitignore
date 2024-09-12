@@ -1,1 +1,7 @@
+<<<<<<< HEAD
 target/
+=======
+.git
+/target
+.env
+>>>>>>> 68988bc (leeting)
