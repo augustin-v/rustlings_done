@@ -20,7 +20,7 @@ fn main() {
     println!("congruence: {}", find_congruence(11, 6));
     println!("find sqrt modulo: {:?}", find_sqrt_modulo(11, 29));
 
-    println!("lengendre residues check: {}", legendre_is_residue(big_p, ints));
+    println!("lengendre residues check: {:?}", find_quadratic_residue_sqrt(big_p, ints));
 }
 
 
@@ -40,7 +40,7 @@ fn gcd(a: u64, b: u64) -> u64{
     
 }
 
-// extended euclidean ```a * x + b * y = gcd(a,b)```
+// extended euclidean
 fn extended_gcd(a: i64, b: i64) -> (i64, i64, i64) {
     if b == 0 { (a, 1, 0) }
     else {
@@ -81,18 +81,33 @@ fn find_sqrt_modulo(n: i64, p: i64) -> Option<i64> {
     (1..p).find(|&x| (x * x) % p == n)
 }
 
-fn legendre_is_residue(p: BigInt, ints: Vec<BigInt>) -> bool {
+// check if quadratic residue + find sqrt
+fn find_quadratic_residue_sqrt(p: BigInt, ints: Vec<BigInt>) -> Option<BigInt> {
     let two = BigInt::from(2);
-    let exponent = (p.clone() - BigInt::one()) / two;
+    let four = BigInt::from(4);
+    let exponent = (&p - BigInt::one()) / &two;
     
+    // The prime supplied obeys p % 4 = 3
+    if &p % &four != BigInt::from(3) {
+        return None;
+    }
+    let sqrt_exponent = (&p + BigInt::one()) / &four;
+    
+    let mut largest_sqrt = None;
+
     for a in ints {
         if a.modpow(&exponent, &p) == BigInt::one() {
-            println!("true for {:?}", a);
-            return true;
+            let sqrt = a.modpow(&sqrt_exponent, &p);
+            println!("Quadratic residue found: {:?}", a);
+            println!("Square root: {:?}", sqrt);
+            
+            largest_sqrt = match largest_sqrt {
+                None => Some(sqrt),
+                Some(current_largest) => Some(std::cmp::max(current_largest, sqrt)),
+            };
         }
     }
-
-    false
+    largest_sqrt
 }
 
 
