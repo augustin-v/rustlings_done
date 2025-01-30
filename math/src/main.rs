@@ -1,7 +1,9 @@
 
 
+use std::collections::HashMap;
+
 use num_bigint::BigInt;
-use num_traits::{One, Zero};
+use num_traits::One;
 
 
 
@@ -11,8 +13,8 @@ fn fibonacci(n: i32) -> i32 {
 
 fn main() {
     let (big_p, ints) = get_input();
-    let a = fibonacci(5);
-
+    let a = fibonacci(7);
+    println!("chinese: {}", chinese_remainder_theorem(get_input3()));
     println!("{a}");
     println!("gcd is: {}", gcd(66528, 52920));
     println!("gcd is: {}, {} {}, ", extended_gcd(26513, 32321).0, extended_gcd(26513, 32321).1, extended_gcd(26513, 32321).2);
@@ -60,13 +62,13 @@ fn find_congruence(a: i64, b: i64) -> i64 {
     a % b //  = x
 }
 
-fn num_to_bin_string(x: i64) -> String {
+fn _num_to_bin_string(x: i64) -> String {
     format!("{:b}", x)
 }
 
 
 // get all powers of two, e.g. input : 11010 -> [1, 3, 4] because binary 11010 = 2^1+2^3+2^4
-fn bin_to_pow_twos(bin: String) -> Vec<i64> {
+fn _bin_to_pow_twos(bin: String) -> Vec<i64> {
     let mut powers = vec![];
 
     for (i, bit) in bin.as_str().chars().rev().enumerate() {
@@ -110,7 +112,17 @@ fn find_quadratic_residue_sqrt(p: BigInt, ints: Vec<BigInt>) -> Option<BigInt> {
     largest_sqrt
 }
 
-
+// from the input from get_input3() , find integer `a` such that x = a % 935 
+fn chinese_remainder_theorem(values:HashMap<i64,i64>) -> i64 {
+    let mut x = 0;
+    let n = 5 * 11 * 17; // = 935
+    for (a, p) in values  {
+        let tmp =  n / p;
+        x += (((extended_gcd(tmp, p).1 %p)* a) % p)  * tmp;
+    }
+    // somehow get a neg number, this is to make sure it is positive
+    x + n + n + n % n
+}
 
 
 
@@ -135,7 +147,19 @@ fn get_input() -> (BigInt, Vec<BigInt>) {
     (big_p, ints)
 }
 
+fn _get_input2() -> (BigInt, BigInt) {
+    let a = BigInt::parse_bytes(b"8479994658316772151941616510097127087554541274812435112009425778595495359700244470400642403747058566807127814165396640215844192327900454116257979487432016769329970767046735091249898678088061634796559556704959846424131820416048436501387617211770124292793308079214153179977624440438616958575058361193975686620046439877308339989295604537867493683872778843921771307305602776398786978353866231661453376056771972069776398999013769588936194859344941268223184197231368887060609212875507518936172060702209557124430477137421847130682601666968691651447236917018634902407704797328509461854842432015009878011354022108661461024768", 10).expect("failed parse bigint");
+    let p = BigInt::parse_bytes(b"30531851861994333252675935111487950694414332763909083514133769861350960895076504687261369815735742549428789138300843082086550059082835141454526618160634109969195486322015775943030060449557090064811940139431735209185996454739163555910726493597222646855506445602953689527405362207926990442391705014604777038685880527537489845359101552442292804398472642356609304810680731556542002301547846635101455995732584071355903010856718680732337369128498655255277003643669031694516851390505923416710601212618443109844041514942401969629158975457079026906304328749039997262960301209158175920051890620947063936347307238412281568760161", 10).expect("failed parse bigint");
+    (a,p)
+}
 
-
-
-
+// for the chinese remainder theorem
+fn get_input3() -> HashMap<i64, i64> {
+    let mut hash = HashMap::new();
+    hash.insert(2, 5);
+    hash.insert(3, 11);
+    hash.insert(5, 17);
+    // x = 3 mod 11
+    // x = 2 mod 5 
+    hash
+}
