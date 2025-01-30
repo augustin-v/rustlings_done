@@ -8,6 +8,7 @@ fn main() {
     println!("gcd is: {}", gcd(66528, 52920));
     println!("gcd is: {}, {} {}, ", extended_gcd(26513, 32321).0, extended_gcd(26513, 32321).1, extended_gcd(26513, 32321).2);
     println!("congruence: {}", find_congruence(8146798528947, 17));
+    println!("congruence: {}", find_congruence(11, 6));
 }
 
 
@@ -45,4 +46,21 @@ fn div_rem<T: std::ops::Div<Output=T> + std::ops::Rem<Output=T> + Copy>(x: T, y:
 // 11 ≡ x mod 6. find x
 fn find_congruence(a: i64, b: i64) -> i64 {
     a % b //  = x
+}
+
+fn num_to_bin_string(x: i64) -> String {
+    format!("{:b}", x)
+}
+
+
+// get all powers of two, e.g. input : 11010 -> [1, 3, 4] because 2^1+2^3+2^4
+fn bin_to_pow_twos(bin: String) -> Vec<i64> {
+    let mut powers = vec![];
+
+    for (i, bit) in bin.as_str().chars().rev().enumerate() {
+        if bit == '1' {
+            powers.push(i.try_into().unwrap());
+        }
+    }
+    powers
 }
