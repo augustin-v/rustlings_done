@@ -156,10 +156,11 @@ fn _get_input2() -> (BigInt, BigInt) {
 // for the chinese remainder theorem
 fn get_input3() -> HashMap<i64, i64> {
     let mut hash = HashMap::new();
-    hash.insert(2, 5);
-    hash.insert(3, 11);
-    hash.insert(5, 17);
-    // x = 3 mod 11
     // x = 2 mod 5 
+    hash.insert(2, 5);
+    // x = 3 mod 11
+    hash.insert(3, 11);
+    // x = 5 mod 17
+    hash.insert(5, 17);
     hash
 }
