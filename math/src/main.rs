@@ -164,3 +164,8 @@ fn get_input3() -> HashMap<i64, i64> {
     hash.insert(5, 17);
     hash
 }
+
+
+
+
+//
