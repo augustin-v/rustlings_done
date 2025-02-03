@@ -15,6 +15,9 @@ template Example () {
     signal temp;
     temp <== x2 * x3;  // Quadratic constraint
     x1 * temp === 0;   // Quadratic constraint
+
+    out <== temp * x1;
+
 }
 
 component main { public [x1,x2,x3] } = Example();
