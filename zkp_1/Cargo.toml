@@ -1,0 +1,8 @@
+[package]
+name = "zkp_1"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+clap = "4.5.37"
+poseidon-bn128 = "0.1.1"
